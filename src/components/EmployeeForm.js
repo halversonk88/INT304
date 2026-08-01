@@ -80,7 +80,7 @@ class EmployeeForm extends React.Component {
                     />
                 </div>
 
-                <button type="submit">Submit Registration Form</button>
+                <button type="submit">Submit Form</button>
             </form>
         )
     }
