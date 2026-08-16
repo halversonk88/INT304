@@ -1,24 +1,28 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import '../CSS/employee.css';
 
 function EmployeeDetail(props) {
-// grab the id from the URL
-  const { id } = useParams();
+// grab the name from the URL
+  const { name } = useParams();
+  const decodedName = decodeURIComponent (name || "");
   
-  // find that employee by id
-  const employee = props.employees.find((employee) => employee.EmployeeId === parseInt(id));
-  const { EmployeeId, name, email, phone } = employee || {}; // Provide fallback object if employee is undefined
+  // find that employee by name
+  const employee = props.employees.find((emp) => emp.name.toLowerCase() === decodedName.toLowerCase());
+  const { email, title, department } = employee || {}; // Provide fallback object if employee is undefined
 
+  if(!employee) {
+    return (
+      <div className="employeed-detail">
+        <p>Employee "{decodedName}" not found.</p>
+      </div>
+    );
+  }
   // render an HTML with that employees information
   return (
     <div className="employee-detail">
       <table>
         <tbody>
-          <tr>
-            <td><label>Employee ID: </label></td>
-            <td>{EmployeeId}</td>
-          </tr>
           <tr>
             <td><label>Name: </label></td>
             <td>{name}</td>
@@ -28,11 +32,17 @@ function EmployeeDetail(props) {
             <td>{email}</td>
           </tr>
           <tr>
-            <td><label>Phone: </label></td>
-            <td>{phone}</td>
+            <td><label>Title: </label></td>
+            <td>{title}</td>
+          </tr>
+          <tr>
+            <td><label>Department: </label></td>
+            <td>{department}</td>
           </tr>
         </tbody>
       </table>
+      <br />
+      <Link to={`/`}><button type="button">Return to Form</button></Link>
     </div>
   );
 }
