@@ -1,89 +1,77 @@
-import React from 'react';
-import '../EmployeeForm.css';
+import React, {useState} from 'react';
+import '../CSS/EmployeeForm.css';
 
-class EmployeeForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '', 
-            email: '', 
-            title: '', 
-            department: ''
-        };
-    } 
+function EmployeeForm(props) {
+    const [name, setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [title,setTitle] = useState('');
+    const [department,setDept] = useState('');
     
-    handleChange = (event) => {
-        // Tracking user inputs
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
-
-    handleSubmit = (event) => {
+    const handleSubmit = (e) => {
         // prevent page from refreshing
-        event.preventDefault();
+        e.preventDefault();
 
         //log curret state to console
-        console.log('Form Submitted. Current data state:', this.state);
+        console.log('Form Submitted. Current data state:', {name, email, title, department});
+
+        //pass data back to parent
+        props.onAddEmployee({name, email, title, department});
 
         //reset state
-        this.setState({
-            name: '', 
-            email: '', 
-            title: '', 
-            department: ''
-        })
+        setName ('');
+        setEmail ('');
+        setTitle ('');
+        setDept ('');
     }
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit} className="employee-form">
-                <h2>Employee Input</h2>
+    return (
+        <div className='main-container'>
+        <form onSubmit={handleSubmit} className="employee-form">
+            <h2>Employee Form</h2>
 
-                <div>
-                    <label>Name: </label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                    />
-                </div>
+            <div className="form-group">
+                <label>Name: </label>
+                <input
+                    type="text"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </div>
 
-                <div>
-                    <label>Email: </label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={this.state.email}
-                        onChange={this.handleChange}
-                    />
-                </div> 
+            <div className="form-group">
+                <label>Email: </label>
+                <input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div> 
 
-                <div>
-                    <label>Title: </label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={this.state.title}
-                        onChange={this.handleChange}
-                    />
-                </div>   
+            <div className="form-group">
+                <label>Title: </label>
+                <input
+                    type="text"
+                    name="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+            </div>   
 
-                <div>
-                    <label>Department: </label>
-                    <input
-                        type="text"
-                        name="department"
-                        value={this.state.department}
-                        onChange={this.handleChange}
-                    />
-                </div>
-
-                <button type="submit">Submit Form</button>
-            </form>
-        )
-    }
+            <div className="form-group">
+                <label>Department: </label>
+                <input
+                    type="text"
+                    name="department"
+                    value={department}
+                    onChange={(e) => setDept(e.target.value)}
+                />
+            </div>
+            <button type="submit" className='btn-save'>Add Employee</button>
+        </form>
+        </div>
+    )
 }
 
 export default EmployeeForm;
